@@ -9,13 +9,18 @@ import fr.snowy.model.Wallet;
 
 public class WalletPanel extends JPanel {
 	
-	public WalletPanel()
+	private Frame frame;
+	
+	public WalletPanel(Frame frame)
 	{
+		this.frame = frame;
+		
 		setLayout(new GridLayout(0, 2));
 	}
 
 	public void updateWallet(Wallet wallet)
 	{
+		removeAll();
 		HashMap<Currency, Float> walletContent = wallet.getWalletContent(); 
 		Label currencyLbl, valueLbl;
 		
@@ -26,5 +31,6 @@ public class WalletPanel extends JPanel {
 			add(currencyLbl);
 			add(valueLbl);
 		}
+		frame.repaint();
 	}
 }

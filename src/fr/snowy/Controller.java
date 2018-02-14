@@ -8,8 +8,7 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.self.kraken.api.KrakenApi;
 import edu.self.kraken.api.KrakenApi.Method;
-import fr.snowy.model.Wallet;
-import fr.snowy.model.WalletParser;
+import fr.snowy.model.*;
 import fr.snowy.ui.Frame;
 
 public class Controller {
@@ -20,7 +19,7 @@ public class Controller {
 	private Frame frame;
 	private KrakenApi krakenApi;
 	private Wallet wallet;
-	private WalletParser walletParser;
+	private WalletKrakenParser walletParser;
 
 	public Controller() throws InvalidKeyException, NoSuchAlgorithmException, IOException {
 		this.frame = new Frame(this);
@@ -30,6 +29,7 @@ public class Controller {
 		this.krakenApi.setKey(KEY);
 		this.krakenApi.setSecret(SECRET);
 		this.refreshWallet();
+//		this.tests();
 	}
 
 	public static void main(String args[]) {
@@ -44,23 +44,34 @@ public class Controller {
 		Map<String, String> input = new HashMap();
 		ObjectMapper mapper;
 		String response;
-		input.put("asset", "ZEUR");
 		
+		input.put("asset", "ZEUR");
 		try {
 			response = this.krakenApi.queryPrivate(Method.BALANCE, input);
 			System.out.println("response received " + response);
 			mapper = new ObjectMapper();
-			this.walletParser = mapper.readValue(response, WalletParser.class);
+			this.walletParser = mapper.readValue(response, WalletKrakenParser.class);
 		} catch (InvalidKeyException | NoSuchAlgorithmException | IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
-		
 		this.wallet = this.walletParser.convertToKraken();
 		this.frame.getWalletPanel().updateWallet(wallet);
+		
 	}
 	
-
-
+	public void tests()
+	{
+		String response;
+		Map<String, String> input = new HashMap();
+		
+		input.put("pair", "XXBTZEUR");
+		try {
+			response = this.krakenApi.queryPrivate(Method.);
+			System.out.println(response);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
