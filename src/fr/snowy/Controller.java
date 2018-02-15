@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.self.kraken.api.KrakenApi;
 import edu.self.kraken.api.KrakenApi.Method;
 import fr.snowy.model.*;
+import fr.snowy.model.kraken.*;
 import fr.snowy.ui.Frame;
 
 public class Controller {
@@ -19,16 +20,17 @@ public class Controller {
 	private Frame frame;
 	private KrakenApi krakenApi;
 	private Wallet wallet;
-	private WalletKrakenParser walletParser;
+	private KrakenParser krakenParser;
+	private KrakenParser ordersParseTest;
 
 	public Controller() throws InvalidKeyException, NoSuchAlgorithmException, IOException {
-		this.frame = new Frame(this);
+		this.wallet = new Wallet();
+		this.frame = new Frame(this, this.wallet);
 		this.krakenApi = new KrakenApi();
 
-		this.frame.setVisible(true);
 		this.krakenApi.setKey(KEY);
 		this.krakenApi.setSecret(SECRET);
-		this.refreshWallet();
+		this.update();
 //		this.tests();
 	}
 
@@ -39,39 +41,50 @@ public class Controller {
 			e.printStackTrace();
 		}
 	}
-
-	public void refreshWallet() {
+	
+	public void update()
+	{
 		Map<String, String> input = new HashMap();
-		ObjectMapper mapper;
+		ObjectMapper mapper = new ObjectMapper();
 		String response;
 		
 		input.put("asset", "ZEUR");
 		try {
 			response = this.krakenApi.queryPrivate(Method.BALANCE, input);
 			System.out.println("response received " + response);
-			mapper = new ObjectMapper();
-			this.walletParser = mapper.readValue(response, WalletKrakenParser.class);
+			this.krakenParser = mapper.readValue(response, KrakenParser.class);
+			this.wallet.setBalance(KrakenUtils.convertToKrakenWallet(krakenParser));
 		} catch (InvalidKeyException | NoSuchAlgorithmException | IOException e) {
 			e.printStackTrace();
 		}
 		
-		this.wallet = this.walletParser.convertToKraken();
-		this.frame.getWalletPanel().updateWallet(wallet);
+		input.put("pair", "XXBTZEUR");
+		try {
+			
+			response = this.krakenApi.queryPrivate(Method.CLOSED_ORDERS);
+			this.ordersParseTest = mapper.readValue(response, KrakenParser.class);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		this.frame.update();
 		
 	}
 	
 	public void tests()
 	{
-		String response;
+		String response; 
+		ObjectMapper mapper = new ObjectMapper();
 		Map<String, String> input = new HashMap();
 		
-		input.put("pair", "XXBTZEUR");
-		try {
-			response = this.krakenApi.queryPrivate(Method.);
-			System.out.println(response);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		
+		System.out.println(this.ordersParseTest);
+		System.out.println(KrakenUtils.convertToKrakenOrders(ordersParseTest));
+	}
+	
+	public Wallet getWallet()
+	{
+		return this.wallet;
 	}
 	
 }

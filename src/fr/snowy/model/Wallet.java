@@ -1,25 +1,42 @@
 package fr.snowy.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Wallet {
 	
-	private HashMap<Currency, Float> wallet;
+	private HashMap<Currency, Float> balance;
+	private ArrayList<Order> orders;
 	
 	public Wallet()
 	{
-		this.wallet = new HashMap<>();
+		this.balance = new HashMap<>();
+		this.orders = new ArrayList<>();
 	}
 	
 
 	@Override
 	public String toString() {
-		return "Wallet [wallet dynamic = " + wallet + "]";
+		return "Wallet [wallet dynamic = " + balance + "]";
 	}
 	
-	public HashMap<Currency, Float> getWalletContent()
-	{
-		return wallet;
+	public HashMap<Currency, Float> getBalance() {
+		return balance;
+	}
+
+
+	public void setBalance(HashMap<Currency, Float> wallet) {
+		this.balance = wallet;
+	}
+
+
+	public ArrayList<Order> getOrders() {
+		return orders;
+	}
+
+
+	public void setOrders(ArrayList<Order> orders) {
+		this.orders = orders;
 	}
 	
 	

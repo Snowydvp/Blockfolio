@@ -12,24 +12,26 @@ import javax.swing.JPanel;
 import javax.swing.JProgressBar;
 import javax.swing.JTabbedPane;
 import fr.snowy.Controller;
+import fr.snowy.model.Wallet;
 
 public class Frame extends JFrame implements ActionListener {
 
 	private ActionPanel actionPanel;
 	private JTabbedPane tabbedPane;
 	private JPanel panel2;
-	private WalletPanel walletPanel;
+	private BalancePanel balancePanel;
+	private OrdersPanel ordersPanel;
 	private Controller controller;
 
-	public Frame(Controller controller) {
+	public Frame(Controller controller, Wallet wallet) {
 		this.controller = controller;
 		this.actionPanel = new ActionPanel(this);
 		this.tabbedPane = new JTabbedPane();
-		this.walletPanel = new WalletPanel(this);
+		this.balancePanel = new BalancePanel(this, wallet.getBalance());
 		this.panel2 = new JPanel();
 
 		add(tabbedPane);
-		tabbedPane.addTab("Wallet", walletPanel);
+		tabbedPane.addTab("Wallet", balancePanel);
 		tabbedPane.addTab("Orders", panel2);
 		add(actionPanel, BorderLayout.SOUTH);
 
@@ -40,19 +42,12 @@ public class Frame extends JFrame implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		switch (tabbedPane.getSelectedIndex()) {
-		case 0: // Wallet
-			controller.refreshWallet();
-			break;
-
-		default:
-			controller.refreshWallet();
-			break;
-		}
+		controller.update();
 	}
 
-	public WalletPanel getWalletPanel() {
-		return this.walletPanel;
+	public void update()
+	{
+		this.balancePanel.update();
 	}
 
 }
