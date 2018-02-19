@@ -11,26 +11,26 @@ import fr.snowy.model.Wallet;
 public class BalancePanel extends JPanel {
 	
 	private Frame frame;
-	HashMap<Currency, Float> balance; 
+	Wallet wallet;
 	
-	public BalancePanel(Frame frame, HashMap<Currency, Float> balance)
+	public BalancePanel(Frame frame, Wallet wallet)
 	{
 		this.frame = frame;
-		this.balance = balance;
+		this.wallet = wallet;
 		
 		setLayout(new GridLayout(0, 2));
 	}
 
 	public void update()
 	{
-//		removeAll();
+		removeAll();
 		
 		Label currencyLbl, valueLbl;
 		
-		for(Currency currency : balance.keySet())
+		for(Currency currency : wallet.getBalance().keySet())
 		{
 			currencyLbl = new Label(currency.getName());
-			valueLbl = new Label(balance.get(currency).toString() + ' ' + currency.getUnit());
+			valueLbl = new Label(wallet.getBalance().get(currency).toString() + ' ' + currency.getUnit());
 			add(currencyLbl);
 			add(valueLbl);
 		}

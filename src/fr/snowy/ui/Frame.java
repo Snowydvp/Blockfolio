@@ -27,7 +27,7 @@ public class Frame extends JFrame implements ActionListener {
 		this.controller = controller;
 		this.actionPanel = new ActionPanel(this);
 		this.tabbedPane = new JTabbedPane();
-		this.balancePanel = new BalancePanel(this, wallet.getBalance());
+		this.balancePanel = new BalancePanel(this, wallet);
 		this.panel2 = new JPanel();
 
 		add(tabbedPane);

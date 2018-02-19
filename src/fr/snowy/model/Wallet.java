@@ -25,8 +25,8 @@ public class Wallet {
 	}
 
 
-	public void setBalance(HashMap<Currency, Float> wallet) {
-		this.balance = wallet;
+	public void setBalance(HashMap<Currency, Float> balance) {
+		this.balance = balance;
 	}
 
 
