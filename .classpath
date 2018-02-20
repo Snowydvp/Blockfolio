@@ -2,9 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/1883472/git/Blockfolio/lib/jackson-annotations-2.9.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/1883472/git/Blockfolio/lib/jackson-core-2.9.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/1883472/git/Blockfolio/lib/jackson-databind-2.9.4.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/kraken-api-java"/>
+	<classpathentry kind="lib" path="lib/jackson-annotations-2.9.4.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-core-2.9.4.jar"/>
+	<classpathentry kind="lib" path="lib/jackson-databind-2.9.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

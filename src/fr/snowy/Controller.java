@@ -3,6 +3,7 @@ package fr.snowy;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,11 +22,13 @@ public class Controller {
 	private KrakenApi krakenApi;
 	private Wallet wallet;
 	private KrakenParser krakenParser;
+	private Market market;
 
 	public Controller() throws InvalidKeyException, NoSuchAlgorithmException, IOException {
-		this.wallet = new Wallet();
-		this.frame = new Frame(this, this.wallet);
 		this.krakenApi = new KrakenApi();
+		this.wallet = new Wallet();
+		this.market = new Market();
+		this.frame = new Frame(this, this.wallet, this.market);
 
 		this.krakenApi.setKey(KEY);
 		this.krakenApi.setSecret(SECRET);
@@ -75,21 +78,23 @@ public class Controller {
 	
 	public void tests()
 	{
-	    //{"error":[],"result":{"XXBTZEUR":{"a":["9124.90000","1","1.000"],"b":["9120.00000","4","4.000"],"c":["9120.00000","0.15460000"],"v":["168.16693995","9985.28473015"],"p":["9070.43189","8860.91132"],"t":[737,46440],"l":["9009.10000","8364.00000"],"h":["9124.90000","9124.90000"],"o":"9017.70000"}}}
+	    //
 		String response; 
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, String> input = new HashMap();
 		input.put("pair", "XXBTZEUR");
 		
 		try {
-		    response = this.krakenApi.queryPublic(Method.TICKER, input);
+//		    response = this.krakenApi.queryPublic(Method.TICKER, input);
+			response = "{\"error\":[],\"result\":{\"XXBTZEUR\":{\"a\":[\"9124.90000\",\"1\",\"1.000\"],\"b\":[\"9120.00000\",\"4\",\"4.000\"],\"c\":[\"9120.00000\",\"0.15460000\"],\"v\":[\"168.16693995\",\"9985.28473015\"],\"p\":[\"9070.43189\",\"8860.91132\"],\"t\":[737,46440],\"l\":[\"9009.10000\",\"8364.00000\"],\"h\":[\"9124.90000\",\"9124.90000\"],\"o\":\"9017.70000\"}}}";
 		    System.out.println(response);
 		    this.krakenParser = mapper.readValue(response, KrakenParser.class);
-		    KrakenUtils.parseFromKrakenPrice(krakenParser);
+		    this.market.putPrice(KrakenUtils.parseFromKrakenPrice(krakenParser));
 		} catch (IOException e) {
-		    // TODO Auto-generated catch block
 		    e.printStackTrace();
 		}
+		
+		this.frame.update();
 	}
 	
 	public Wallet getWallet()

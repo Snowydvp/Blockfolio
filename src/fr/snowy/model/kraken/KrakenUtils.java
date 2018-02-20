@@ -3,10 +3,10 @@ package fr.snowy.model.kraken;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+
 import fr.snowy.model.Currency;
 import fr.snowy.model.Order;
 import fr.snowy.model.Price;
-import fr.snowy.model.Wallet;
 
 public class KrakenUtils {
     
@@ -72,8 +72,8 @@ public class KrakenUtils {
 
 	public static Currency[] parseCurrencies(String pair) {
 		Currency[] currencies = new Currency[2];
-		currencies[0] = Currency.getByName(pair.substring(0, 3));
-		currencies[1] = Currency.getByName(pair.substring(3));
+		currencies[0] = convertCurrencyFromKraken(pair.substring(0, 4));
+		currencies[1] = convertCurrencyFromKraken(pair.substring(4));
 		return currencies;
 	}
 	
@@ -86,13 +86,22 @@ public class KrakenUtils {
 	    pairStr = (String) response.getResult().keySet().toArray()[0];
 	    HashMap prices = (HashMap)(response.getResult().get(pairStr));
 	    ArrayList<String> ask = (ArrayList<String>) prices.get("a");
-	    
 	    ArrayList<String> bid = (ArrayList<String>) prices.get("b");
 	    
-	    System.out.println(ask.get(0) + " " + bid.get(0));
 	    pair = parseCurrencies(pairStr); 
-	    Price price = new Price(pair[0], pair[1], Float.parseFloat("0.9"));
+	    Price price = new Price(pair[0], pair[1], computeMarketValue(ask, bid));
 	    return price;
+	}
+	
+	public static double computeMarketValue(ArrayList<String> ask, ArrayList<String> bid)
+	{
+		double askPrice = Double.parseDouble(ask.get(0));
+		double bidPrice = Double.parseDouble(bid.get(0));
+		int askCoeff = Integer.parseInt(ask.get(1));
+		int bidCoeff = Integer.parseInt(bid.get(1));
+		
+		return ( (askCoeff * askPrice) + (bidCoeff - bidCoeff) ) / (askCoeff + bidCoeff);
+		
 	}
 
 }
