@@ -82,11 +82,12 @@ public class KrakenUtils {
 	    String pairStr;
 	    double bidValue, askValue;
 	    Currency[] pair;
+	    ArrayList<String> ask, bid;
 	    
 	    pairStr = (String) response.getResult().keySet().toArray()[0];
 	    HashMap prices = (HashMap)(response.getResult().get(pairStr));
-	    ArrayList<String> ask = (ArrayList<String>) prices.get("a");
-	    ArrayList<String> bid = (ArrayList<String>) prices.get("b");
+	    ask = (ArrayList<String>) prices.get("a");
+	    bid = (ArrayList<String>) prices.get("b");
 	    
 	    pair = parseCurrencies(pairStr); 
 	    Price price = new Price(pair[0], pair[1], computeMarketValue(ask, bid));
@@ -100,7 +101,7 @@ public class KrakenUtils {
 		int askCoeff = Integer.parseInt(ask.get(1));
 		int bidCoeff = Integer.parseInt(bid.get(1));
 		
-		return ( (askCoeff * askPrice) + (bidCoeff - bidCoeff) ) / (askCoeff + bidCoeff);
+		return ( (askCoeff * askPrice) + (bidPrice * bidCoeff) ) / (askCoeff + bidCoeff);
 		
 	}
 

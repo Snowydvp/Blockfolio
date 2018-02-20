@@ -26,7 +26,7 @@ public class PricePanel extends JPanel {
 		for(Price price : market.getPrices())
 		{
 			currToLbl = new JLabel(price.getCurrencyTo().toString());
-			valueLbl = new JLabel(String.format("%.3f", price.getValue()));
+			valueLbl = new JLabel(String.format("%.2f", price.getValue()) + ' ' + price.getCurrencyFrom().getUnit());
 			
 			add(currToLbl);
 			add(valueLbl);

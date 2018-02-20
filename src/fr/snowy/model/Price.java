@@ -8,22 +8,11 @@ public class Price implements Comparable<Price>{
     private double value;
     
     
-    
     public Price(Currency cryptoTo, Currency currencyFrom, double value) {
 	this.currencyTo = cryptoTo;
 	this.currencyFrom = currencyFrom;
 	this.value = value;
     }
-    public Currency getCurrencyTo() {
-        return currencyTo;
-    }
-    public Currency getCurrencyFrom() {
-        return currencyFrom;
-    }
-    public double getValue() {
-        return value;
-    }
-    
     
 	@Override
 	public int compareTo(Price o) { // %
@@ -42,6 +31,16 @@ public class Price implements Comparable<Price>{
 		
 	}
 	
+	  
+    public Currency getCurrencyTo() {
+        return currencyTo;
+    }
+    public Currency getCurrencyFrom() {
+        return currencyFrom;
+    }
+    public double getValue() {
+        return value;
+    }
     
 
 }

@@ -15,7 +15,7 @@ import fr.snowy.ui.Frame;
 
 public class Controller {
 	
-	 private static String KEY = "2eLYp6Diwqt3L15lObZiT+/jFoPV6sasVG+14gPJIT35MIbBw2WSfGM5",
+	private static String KEY = "2eLYp6Diwqt3L15lObZiT+/jFoPV6sasVG+14gPJIT35MIbBw2WSfGM5",
 	 SECRET = "8xnmLE+ZAvGNQfbKWLScLwdyIUg+ymkj5XAe+gJxIdym/PFtCuWJ4c1DptKQfllOP/URZUidGP9LJBwB3/IYEw==";
 
 	private Frame frame;
@@ -33,7 +33,7 @@ public class Controller {
 		this.krakenApi.setKey(KEY);
 		this.krakenApi.setSecret(SECRET);
 //		this.update();
-		this.tests();
+		this.updatePrices();
 	}
 
 	public static void main(String args[]) {
@@ -76,7 +76,7 @@ public class Controller {
 		
 	}
 	
-	public void tests()
+	public void updatePrices()
 	{
 	    //
 		String response; 
