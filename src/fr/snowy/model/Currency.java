@@ -10,6 +10,7 @@ public enum Currency {
 	XRP ("XRP", 'x'),
 	XLM ("XLM", 'l'),
 	ETH ("ETH", 'e'),
+	ETC ("ETC", 'e'),
 	ICN ("ICN", 'i'),
 	XMR ("XMR", 'm'),
 	BCH ("BCH", 'b'),
@@ -37,6 +38,7 @@ public enum Currency {
 		if(cur == null)
 		{
 			cur = UNKNOW;
+			System.out.println("UNKNOWN: " + name);
 		}
 		return cur;
 	}

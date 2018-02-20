@@ -28,7 +28,7 @@ public class Frame extends JFrame implements ActionListener {
 	this.market = market;
 	this.actionPanel = new ActionPanel(this);
 	this.tabbedPane = new JTabbedPane();
-	this.balancePanel = new BalancePanel(this, wallet);
+	this.balancePanel = new BalancePanel(wallet);
 	this.ordersPanel = new OrdersPanel(wallet);
 	this.pricePanel = new PricePanel(market);
 
@@ -53,6 +53,7 @@ public class Frame extends JFrame implements ActionListener {
 	this.balancePanel.update();
 	this.ordersPanel.update();
 	this.pricePanel.update();
+	repaint();
 	
     }
 

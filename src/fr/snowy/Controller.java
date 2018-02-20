@@ -32,7 +32,7 @@ public class Controller {
 
 		this.krakenApi.setKey(KEY);
 		this.krakenApi.setSecret(SECRET);
-//		this.update();
+		this.update();
 		this.updatePrices();
 	}
 
@@ -85,8 +85,8 @@ public class Controller {
 		input.put("pair", "XXBTZEUR");
 		
 		try {
-//		    response = this.krakenApi.queryPublic(Method.TICKER, input);
-			response = "{\"error\":[],\"result\":{\"XXBTZEUR\":{\"a\":[\"9124.90000\",\"1\",\"1.000\"],\"b\":[\"9120.00000\",\"4\",\"4.000\"],\"c\":[\"9120.00000\",\"0.15460000\"],\"v\":[\"168.16693995\",\"9985.28473015\"],\"p\":[\"9070.43189\",\"8860.91132\"],\"t\":[737,46440],\"l\":[\"9009.10000\",\"8364.00000\"],\"h\":[\"9124.90000\",\"9124.90000\"],\"o\":\"9017.70000\"}}}";
+		    response = this.krakenApi.queryPublic(Method.TICKER, input);
+//			response = "{\"error\":[],\"result\":{\"XXBTZEUR\":{\"a\":[\"9124.90000\",\"1\",\"1.000\"],\"b\":[\"9120.00000\",\"4\",\"4.000\"],\"c\":[\"9120.00000\",\"0.15460000\"],\"v\":[\"168.16693995\",\"9985.28473015\"],\"p\":[\"9070.43189\",\"8860.91132\"],\"t\":[737,46440],\"l\":[\"9009.10000\",\"8364.00000\"],\"h\":[\"9124.90000\",\"9124.90000\"],\"o\":\"9017.70000\"}}}";
 		    System.out.println(response);
 		    this.krakenParser = mapper.readValue(response, KrakenParser.class);
 		    this.market.putPrice(KrakenUtils.parseFromKrakenPrice(krakenParser));
