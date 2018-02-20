@@ -20,12 +20,38 @@ public class Order {
 		this.cost = quantity * price;
 	}
 
+	public Currency getCurrencyTo() {
+	    return currencyTo;
+	}
+
+	public Currency getCurrencyFrom() {
+	    return currencyFrom;
+	}
+
+	public String getInstruction() {
+	    return instruction;
+	}
+
+	public String getType() {
+	    return type;
+	}
+
+	public float getPrice() {
+	    return price;
+	}
+
+	public float getQuantity() {
+	    return quantity;
+	}
+
+	public float getCost() {
+	    return cost;
+	}
+	
 	@Override
 	public String toString() {
 		return "Order [currencyTo=" + currencyTo + ", currencyFrom=" + currencyFrom + ", instruction=" + instruction
 				+ ", type=" + type + ", quantity=" + quantity + "@" + price + "]";
 	}
 	
-	
-
 }

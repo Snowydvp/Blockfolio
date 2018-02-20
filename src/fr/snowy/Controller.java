@@ -21,7 +21,6 @@ public class Controller {
 	private KrakenApi krakenApi;
 	private Wallet wallet;
 	private KrakenParser krakenParser;
-	private KrakenParser ordersParseTest;
 
 	public Controller() throws InvalidKeyException, NoSuchAlgorithmException, IOException {
 		this.wallet = new Wallet();
@@ -30,8 +29,8 @@ public class Controller {
 
 		this.krakenApi.setKey(KEY);
 		this.krakenApi.setSecret(SECRET);
-		this.update();
-//		this.tests();
+//		this.update();
+		this.tests();
 	}
 
 	public static void main(String args[]) {
@@ -58,11 +57,14 @@ public class Controller {
 			e.printStackTrace();
 		}
 		
+		input = new HashMap();
 		input.put("pair", "XXBTZEUR");
+		
 		try {
-			
 			response = this.krakenApi.queryPrivate(Method.CLOSED_ORDERS);
-			this.ordersParseTest = mapper.readValue(response, KrakenParser.class);
+			System.out.println(response);
+			this.krakenParser = mapper.readValue(response, KrakenParser.class);
+			this.wallet.setOrders(KrakenUtils.convertToKrakenOrders(krakenParser));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -73,13 +75,21 @@ public class Controller {
 	
 	public void tests()
 	{
+	    //{"error":[],"result":{"XXBTZEUR":{"a":["9124.90000","1","1.000"],"b":["9120.00000","4","4.000"],"c":["9120.00000","0.15460000"],"v":["168.16693995","9985.28473015"],"p":["9070.43189","8860.91132"],"t":[737,46440],"l":["9009.10000","8364.00000"],"h":["9124.90000","9124.90000"],"o":"9017.70000"}}}
 		String response; 
 		ObjectMapper mapper = new ObjectMapper();
 		Map<String, String> input = new HashMap();
+		input.put("pair", "XXBTZEUR");
 		
-		
-		System.out.println(this.ordersParseTest);
-		System.out.println(KrakenUtils.convertToKrakenOrders(ordersParseTest));
+		try {
+		    response = this.krakenApi.queryPublic(Method.TICKER, input);
+		    System.out.println(response);
+		    this.krakenParser = mapper.readValue(response, KrakenParser.class);
+		    KrakenUtils.parseFromKrakenPrice(krakenParser);
+		} catch (IOException e) {
+		    // TODO Auto-generated catch block
+		    e.printStackTrace();
+		}
 	}
 	
 	public Wallet getWallet()

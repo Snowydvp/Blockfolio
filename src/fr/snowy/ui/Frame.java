@@ -16,55 +16,65 @@ import fr.snowy.model.Wallet;
 
 public class Frame extends JFrame implements ActionListener {
 
-	private ActionPanel actionPanel;
-	private JTabbedPane tabbedPane;
-	private JPanel panel2;
-	private BalancePanel balancePanel;
-	private OrdersPanel ordersPanel;
-	private Controller controller;
+    private ActionPanel actionPanel;
+    private JTabbedPane tabbedPane;
+    private BalancePanel balancePanel;
+    private OrdersPanel ordersPanel;
+    private PricePanel pricePanel;
+    private Controller controller;
 
-	public Frame(Controller controller, Wallet wallet) {
-		this.controller = controller;
-		this.actionPanel = new ActionPanel(this);
-		this.tabbedPane = new JTabbedPane();
-		this.balancePanel = new BalancePanel(this, wallet);
-		this.panel2 = new JPanel();
+    public Frame(Controller controller, Wallet wallet) {
+	this.controller = controller;
+	this.actionPanel = new ActionPanel(this);
+	this.tabbedPane = new JTabbedPane();
+	this.balancePanel = new BalancePanel(this, wallet);
+	this.ordersPanel = new OrdersPanel(wallet);
+	this.pricePanel = new PricePanel();
 
-		add(tabbedPane);
-		tabbedPane.addTab("Wallet", balancePanel);
-		tabbedPane.addTab("Orders", panel2);
-		add(actionPanel, BorderLayout.SOUTH);
+	add(tabbedPane);
+	tabbedPane.addTab("Wallet", balancePanel);
+	tabbedPane.addTab("Orders", ordersPanel);
+	tabbedPane.addTab("Prices", pricePanel);
+	add(actionPanel, BorderLayout.SOUTH);
 
-		setSize(500, 500);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setVisible(true);
-	}
+	setSize(500, 500);
+	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	this.setVisible(true);
+    }
 
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		controller.update();
-	}
+    @Override
+    public void actionPerformed(ActionEvent e) {
+	controller.update();
+    }
 
-	public void update()
-	{
-		this.balancePanel.update();
-	}
+    public void update() {
+	//TODO threads
+	this.balancePanel.update();
+	this.ordersPanel.update();
+	
+    }
+
+    public BalancePanel getBalancePanel() {
+        return balancePanel;
+    }
+
+    public OrdersPanel getOrdersPanel() {
+        return ordersPanel;
+    }
 
 }
 
 class ActionPanel extends JPanel {
 
-	private JFrame frame;
-	private JButton updateButton;
+    private JFrame frame;
+    private JButton updateButton;
 
-	public ActionPanel(Frame frame) {
-		this.frame = frame;
-		this.updateButton = new JButton("Actualiser");
+    public ActionPanel(Frame frame) {
+	this.frame = frame;
+	this.updateButton = new JButton("Actualiser");
 
-		this.updateButton.addActionListener(frame);
-		add(updateButton);
-	}
-
-	
+	this.updateButton.addActionListener(frame);
+	add(updateButton);
+    }
 
 }

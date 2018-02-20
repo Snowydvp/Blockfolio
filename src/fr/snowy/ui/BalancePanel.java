@@ -2,9 +2,10 @@ package fr.snowy.ui;
 
 import java.awt.GridLayout;
 import java.awt.Label;
-import java.util.ArrayList;
-import java.util.HashMap;
+
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+
 import fr.snowy.model.Currency;
 import fr.snowy.model.Wallet;
 
@@ -25,12 +26,12 @@ public class BalancePanel extends JPanel {
 	{
 		removeAll();
 		
-		Label currencyLbl, valueLbl;
+		JLabel currencyLbl, valueLbl;
 		
 		for(Currency currency : wallet.getBalance().keySet())
 		{
-			currencyLbl = new Label(currency.getName());
-			valueLbl = new Label(wallet.getBalance().get(currency).toString() + ' ' + currency.getUnit());
+			currencyLbl = new JLabel(currency.getName());
+			valueLbl = new JLabel(String.format("%.3f", wallet.getBalance().get(currency)) + ' ' + currency.getUnit());
 			add(currencyLbl);
 			add(valueLbl);
 		}
