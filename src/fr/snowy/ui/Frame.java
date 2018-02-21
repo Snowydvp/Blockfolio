@@ -1,9 +1,15 @@
 package fr.snowy.ui;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.net.MalformedURLException;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -37,7 +43,9 @@ public class Frame extends JFrame implements ActionListener {
 	tabbedPane.addTab("Orders", ordersPanel);
 	tabbedPane.addTab("Prices", pricePanel);
 	add(actionPanel, BorderLayout.SOUTH);
-
+	
+	this.add(actionPanel, BorderLayout.SOUTH);
+	
 	setSize(500, 500);
 	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	this.setVisible(true);
@@ -45,16 +53,23 @@ public class Frame extends JFrame implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-	controller.update();
-    }
-
-    public void update() {
-	//TODO threads
-	this.balancePanel.update();
-	this.ordersPanel.update();
-	this.pricePanel.update();
-	repaint();
-	
+    	switch (this.tabbedPane.getSelectedIndex()) {
+    	case 0:
+    		controller.updateBalance();
+    		this.balancePanel.update();
+    		break;
+    	case 1:
+    		controller.updateOrders();
+    		this.ordersPanel.update();
+    		break;
+    	case 2:
+    		controller.updatePrices();
+    		this.pricePanel.update();
+    		break;
+    	default:
+    		break;
+    	}
+    	repaint();
     }
 
     public BalancePanel getBalancePanel() {
@@ -71,10 +86,13 @@ class ActionPanel extends JPanel {
 
     private JFrame frame;
     private JButton updateButton;
+    private ImageIcon refreshIcon;
 
     public ActionPanel(Frame frame) {
 	this.frame = frame;
-	this.updateButton = new JButton("Actualiser");
+	setLayout(new FlowLayout(FlowLayout.RIGHT));
+	this.refreshIcon =  new ImageIcon(new ImageIcon("resources/refresh.png").getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT), "Actualiser");
+	this.updateButton = new JButton(refreshIcon);
 
 	this.updateButton.addActionListener(frame);
 	add(updateButton);

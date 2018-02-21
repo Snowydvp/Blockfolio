@@ -14,9 +14,9 @@ import fr.snowy.model.kraken.*;
 import fr.snowy.ui.Frame;
 
 public class Controller {
-	
+
 	private static String KEY = "2eLYp6Diwqt3L15lObZiT+/jFoPV6sasVG+14gPJIT35MIbBw2WSfGM5",
-	 SECRET = "8xnmLE+ZAvGNQfbKWLScLwdyIUg+ymkj5XAe+gJxIdym/PFtCuWJ4c1DptKQfllOP/URZUidGP9LJBwB3/IYEw==";
+			SECRET = "8xnmLE+ZAvGNQfbKWLScLwdyIUg+ymkj5XAe+gJxIdym/PFtCuWJ4c1DptKQfllOP/URZUidGP9LJBwB3/IYEw==";
 
 	private Frame frame;
 	private KrakenApi krakenApi;
@@ -32,7 +32,7 @@ public class Controller {
 
 		this.krakenApi.setKey(KEY);
 		this.krakenApi.setSecret(SECRET);
-		this.update();
+		// this.update();
 		this.updatePrices();
 	}
 
@@ -43,26 +43,15 @@ public class Controller {
 			e.printStackTrace();
 		}
 	}
-	
-	public void update()
-	{
+
+	public void updateOrders() {
 		Map<String, String> input = new HashMap();
 		ObjectMapper mapper = new ObjectMapper();
 		String response;
-		
-		input.put("asset", "ZEUR");
-		try {
-			response = this.krakenApi.queryPrivate(Method.BALANCE, input);
-			System.out.println("response received " + response);
-			this.krakenParser = mapper.readValue(response, KrakenParser.class);
-			this.wallet.setBalance(KrakenUtils.convertToKrakenWallet(krakenParser));
-		} catch (InvalidKeyException | NoSuchAlgorithmException | IOException e) {
-			e.printStackTrace();
-		}
-		
+
 		input = new HashMap();
 		input.put("pair", "XXBTZEUR");
-		
+
 		try {
 			response = this.krakenApi.queryPrivate(Method.CLOSED_ORDERS);
 			System.out.println(response);
@@ -71,35 +60,52 @@ public class Controller {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		this.frame.update();
-		
+
+
 	}
-	
-	public void updatePrices()
-	{
-	    //
-		String response; 
+
+	public void updatePrices() {
+		String krakenFiat = KrakenUtils.convertCurrencyToKraken(Fiat.DEFAULT);
+		String krakenCrypto;
+		String response;
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, String> input = new HashMap();
-		input.put("pair", "XXBTZEUR");
+		Map<String, String> input = new HashMap<>();
 		
-		try {
-		    response = this.krakenApi.queryPublic(Method.TICKER, input);
-//			response = "{\"error\":[],\"result\":{\"XXBTZEUR\":{\"a\":[\"9124.90000\",\"1\",\"1.000\"],\"b\":[\"9120.00000\",\"4\",\"4.000\"],\"c\":[\"9120.00000\",\"0.15460000\"],\"v\":[\"168.16693995\",\"9985.28473015\"],\"p\":[\"9070.43189\",\"8860.91132\"],\"t\":[737,46440],\"l\":[\"9009.10000\",\"8364.00000\"],\"h\":[\"9124.90000\",\"9124.90000\"],\"o\":\"9017.70000\"}}}";
-		    System.out.println(response);
-		    this.krakenParser = mapper.readValue(response, KrakenParser.class);
-		    this.market.putPrice(KrakenUtils.parseFromKrakenPrice(krakenParser));
-		} catch (IOException e) {
-		    e.printStackTrace();
+		for (Crypto crypto : Crypto.values()) {
+			krakenCrypto = KrakenUtils.convertCurrencyToKraken(crypto);
+			input.put("pair", krakenCrypto + krakenFiat);
 		}
-		
-		this.frame.update();
+		try {
+//			 response = this.krakenApi.queryPublic(Method.TICKER, input);
+			response = "{\"error\":[],\"result\":{\"XXBTZEUR\":{\"a\":[\"9124.90000\",\"1\",\"1.000\"],\"b\":[\"9120.00000\",\"4\",\"4.000\"],\"c\":[\"9120.00000\",\"0.15460000\"],\"v\":[\"168.16693995\",\"9985.28473015\"],\"p\":[\"9070.43189\",\"8860.91132\"],\"t\":[737,46440],\"l\":[\"9009.10000\",\"8364.00000\"],\"h\":[\"9124.90000\",\"9124.90000\"],\"o\":\"9017.70000\"}}}";
+			System.out.println(response);
+			this.krakenParser = mapper.readValue(response, KrakenParser.class);
+			this.market.putPrice(KrakenUtils.parseFromKrakenPrice(krakenParser));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 	
-	public Wallet getWallet()
+	public void updateBalance()
 	{
+		Map<String, String> input = new HashMap();
+		ObjectMapper mapper = new ObjectMapper();
+		String response;
+		
+		input.put("asset", "ZEUR");
+		try {
+			response = this.krakenApi.queryPrivate(Method.TRADE_BALANCE, input);
+			System.out.println("response received " + response);
+			this.krakenParser = mapper.readValue(response, KrakenParser.class);
+			this.wallet.setBalance(KrakenUtils.convertToKrakenWallet(krakenParser));
+		} catch (InvalidKeyException | NoSuchAlgorithmException | IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public Wallet getWallet() {
 		return this.wallet;
 	}
-	
+
 }

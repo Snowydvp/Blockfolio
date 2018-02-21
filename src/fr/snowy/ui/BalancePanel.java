@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 
-import fr.snowy.model.Currency;
+import fr.snowy.model.Crypto;
 import fr.snowy.model.Price;
 import fr.snowy.model.Wallet;
 
@@ -25,14 +25,14 @@ public class BalancePanel extends JPanel {
 
     public void update() {
 	Object[][] data = new Object[wallet.getBalance().size()][2];
-	Currency currentCurrency;
+	Crypto currentCurrency;
 	Float currentValue;
 	
 	if (balanceTable != null)
 	    remove(balanceTable);
 
 	for (int i = 0; i < wallet.getBalance().size(); i++) {
-	    currentCurrency = (Currency) wallet.getBalance().keySet().toArray()[i];
+	    currentCurrency = (Crypto) wallet.getBalance().keySet().toArray()[i];
 	    data[i][0] = currentCurrency.toString();
 	    data[i][1] = String.format("%5.2f", wallet.getBalance().get(currentCurrency) + ' ' + currentCurrency.getUnit());
 	}

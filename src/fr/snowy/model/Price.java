@@ -4,11 +4,12 @@ import java.util.Comparator;
 
 public class Price implements Comparable<Price>{
     
-    private Currency currencyTo, currencyFrom;
+    private Crypto currencyTo;
+    private Currency currencyFrom;
     private double value;
     
     
-    public Price(Currency cryptoTo, Currency currencyFrom, double value) {
+    public Price(Crypto cryptoTo, Currency currencyFrom, double value) {
 	this.currencyTo = cryptoTo;
 	this.currencyFrom = currencyFrom;
 	this.value = value;
@@ -32,7 +33,7 @@ public class Price implements Comparable<Price>{
 	}
 	
 	  
-    public Currency getCurrencyTo() {
+    public Crypto getCurrencyTo() {
         return currencyTo;
     }
     public Currency getCurrencyFrom() {
