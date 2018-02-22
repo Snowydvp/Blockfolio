@@ -32,8 +32,6 @@ public class Controller {
 
 		this.krakenApi.setKey(KEY);
 		this.krakenApi.setSecret(SECRET);
-		// this.update();
-		this.updatePrices();
 	}
 
 	public static void main(String args[]) {

@@ -2,6 +2,8 @@ package fr.snowy.model;
 
 import java.util.ArrayList;
 
+import javax.swing.table.AbstractTableModel;
+
 public class Market {
 	
 	private ArrayList<Price> prices;
@@ -21,5 +23,7 @@ public class Market {
 	public ArrayList<Price> getPrices() {
 		return prices;
 	}
+
+
 	
 }
