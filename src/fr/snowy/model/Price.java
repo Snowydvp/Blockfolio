@@ -1,8 +1,9 @@
 package fr.snowy.model;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
-public class Price implements Comparable<Price>{
+public class Price implements Comparable<Price>, Serializable{
     
     private Crypto currencyTo;
     private Currency currencyFrom;

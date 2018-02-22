@@ -1,9 +1,10 @@
 package fr.snowy.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Wallet {
+public class Wallet implements Serializable {
 	
 	private HashMap<Currency, Float> balance;
 	private ArrayList<Order> orders;

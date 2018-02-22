@@ -27,7 +27,6 @@ public class BalancePanel extends JPanel {
     }
 
     public void update() {
-    	this.wallet.getBalance().put(Crypto.ZEC, 0.5f);
     }
 }
 

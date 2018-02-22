@@ -30,7 +30,6 @@ public class OrdersPanel extends JPanel {
 	}
 
 	public void update() {
-		this.wallet.getOrders().add(new Order(Fiat.DEFAULT, Crypto.XBT, "BUY", "market", 0.2f, 0.01f));
 	}
 
 }

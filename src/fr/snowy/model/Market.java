@@ -1,10 +1,11 @@
 package fr.snowy.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import javax.swing.table.AbstractTableModel;
 
-public class Market {
+public class Market implements Serializable {
 	
 	private ArrayList<Price> prices;
 

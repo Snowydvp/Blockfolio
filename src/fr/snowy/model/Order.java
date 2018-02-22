@@ -1,6 +1,8 @@
 package fr.snowy.model;
 
-public class Order {
+import java.io.Serializable;
+
+public class Order implements Serializable{
 	
 	private Currency currencyTo, currencyFrom;
 	private String instruction;
