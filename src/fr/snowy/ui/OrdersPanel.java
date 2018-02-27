@@ -1,14 +1,10 @@
 package fr.snowy.ui;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
 
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-
-import fr.snowy.model.Crypto;
-import fr.snowy.model.Fiat;
 import fr.snowy.model.Order;
 import fr.snowy.model.Wallet;
 
@@ -20,7 +16,7 @@ public class OrdersPanel extends JPanel {
 
 	public OrdersPanel(Wallet wallet) {
 		//TODO add rentability
-		this.ordersModel = new OrdersModel(wallet.getOrders());
+		this.ordersModel = new OrdersModel(wallet);
 		this.wallet = wallet;
 		this.ordersTable = new JTable(ordersModel);
 
@@ -35,15 +31,15 @@ public class OrdersPanel extends JPanel {
 }
 
 class OrdersModel extends AbstractTableModel {
-	private ArrayList<Order> orders;
+	private Wallet wallet;
 
-	public OrdersModel(ArrayList<Order> orders) {
-		this.orders = orders;
+	public OrdersModel(Wallet wallet) {
+		this.wallet = wallet;
 	}
 
 	@Override
 	public int getRowCount() {
-		return this.orders.size();
+		return this.wallet.getOrders().size();
 	}
 
 	@Override
@@ -53,7 +49,7 @@ class OrdersModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Order order = this.orders.get(rowIndex);
+		Order order = this.wallet.getOrders().get(rowIndex);
 		Object object;
 		switch (columnIndex) {
 		case 0:

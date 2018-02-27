@@ -1,16 +1,10 @@
 package fr.snowy.ui;
 
 import java.awt.BorderLayout;
-import java.util.ArrayList;
-
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-
-import fr.snowy.model.Crypto;
-import fr.snowy.model.Fiat;
 import fr.snowy.model.Market;
-import fr.snowy.model.Order;
 import fr.snowy.model.Price;
 
 public class PricePanel extends JPanel {
@@ -21,7 +15,7 @@ public class PricePanel extends JPanel {
 
     public PricePanel(Market market) {
 	this.market = market;
-	this.pricesModel = new PricesModel(market.getPrices());
+	this.pricesModel = new PricesModel(market);
 	this.priceTable = new JTable(pricesModel);
 	
 	setLayout(new BorderLayout());
@@ -36,15 +30,15 @@ public class PricePanel extends JPanel {
 
 class PricesModel extends AbstractTableModel
 {
-	private ArrayList<Price> prices; 
+	Market market;
 	
-	public PricesModel(ArrayList<Price> prices) {
-		this.prices = prices;
+	public PricesModel(Market market) {
+		this.market = market;
 	}
 
 	@Override
 	public int getRowCount() {
-		return this.prices.size();
+		return market.getPrices().size();
 	}
 
 	@Override
@@ -54,7 +48,7 @@ class PricesModel extends AbstractTableModel
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Price currentPrice = this.prices.get(rowIndex);
+		Price currentPrice = this.market.getPrices().get(rowIndex);
 		Object object;
 		switch (columnIndex) {
 		case 0:
