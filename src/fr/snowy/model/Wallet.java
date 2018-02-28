@@ -1,13 +1,14 @@
 package fr.snowy.model;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Wallet implements Serializable {
-	
 	private HashMap<Currency, Float> balance;
 	private ArrayList<Order> orders;
+	private long lastOrderTimestamp, lastBalanceTimestamp;
 	
 	public Wallet()
 	{
@@ -40,6 +41,14 @@ public class Wallet implements Serializable {
 		this.orders = orders;
 	}
 	
-	
+
+	public long getLastOrderTimestamp() {
+		return lastOrderTimestamp;
+	}
+
+
+	public long getLastBalanceTimestamp() {
+		return lastBalanceTimestamp;
+	}
 
 }

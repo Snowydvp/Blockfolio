@@ -1,11 +1,14 @@
 package fr.snowy.api.kraken;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -21,15 +24,23 @@ import fr.snowy.model.kraken.KrakenUtils;
 
 public class KrakenAPI {
 
-	private static String KEY = "2eLYp6Diwqt3L15lObZiT+/jFoPV6sasVG+14gPJIT35MIbBw2WSfGM5",
-			SECRET = "8xnmLE+ZAvGNQfbKWLScLwdyIUg+ymkj5XAe+gJxIdym/PFtCuWJ4c1DptKQfllOP/URZUidGP9LJBwB3/IYEw==";
+	private String key, secret;
 
 	private KrakenApi api;
 
 	public KrakenAPI() {
+		File keys = new File("resources/api.txt");
+		Scanner scanner;
+		try {
+			scanner = new Scanner(keys);
+			key = scanner.nextLine();
+			secret = scanner.nextLine();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 		this.api = new KrakenApi();
-		this.api.setKey(KEY);
-		this.api.setSecret(SECRET);
+		this.api.setKey(key);
+		this.api.setSecret(secret);
 	}
 
 	// TODO move KrakenUtils methods here

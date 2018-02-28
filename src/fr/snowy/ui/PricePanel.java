@@ -26,6 +26,7 @@ public class PricePanel extends JPanel {
     public void update() {
     }
     
+    
 }
 
 class PricesModel extends AbstractTableModel

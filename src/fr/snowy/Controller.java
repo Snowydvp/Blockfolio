@@ -21,6 +21,7 @@ public class Controller {
 	private KrakenAPI krakenApi;
 	private Wallet wallet;
 	private Market market;
+	
 
 	public Controller() throws InvalidKeyException, NoSuchAlgorithmException, IOException {
 
@@ -49,7 +50,8 @@ public class Controller {
 			krakenCrypto = KrakenUtils.convertCurrencyToKraken(crypto);
 			input.put("pair", krakenCrypto + krakenFiat);
 		}
-		this.market.setPrices(this.krakenApi.queryPrices(input));
+		this.market.putPrices(this.krakenApi.queryPrices(input));
+		this.market.setLastRefreshedTimestamp(System.currentTimeMillis());
 	}
 
 	public void updateBalance() {

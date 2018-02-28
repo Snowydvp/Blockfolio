@@ -27,7 +27,7 @@ public class OrdersPanel extends JPanel {
 
 	public void update() {
 	}
-
+	
 }
 
 class OrdersModel extends AbstractTableModel {
