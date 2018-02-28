@@ -13,12 +13,9 @@ public class Market implements Serializable {
 		this.prices = new ArrayList<>();
 	}
 
-	public void putPrice(Price newPrice)
+	public void setPrices(ArrayList<Price> newPrices)
 	{
-		int index;
-		if((index = prices.indexOf(newPrice)) != -1)
-			prices.remove(index);
-		prices.add(newPrice);
+		this.prices = newPrices;
 	}
 	
 	public ArrayList<Price> getPrices() {

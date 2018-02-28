@@ -1,12 +1,10 @@
 package fr.snowy.ui;
 
 import java.awt.BorderLayout;
-import java.util.HashMap;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import fr.snowy.model.Crypto;
 import fr.snowy.model.Currency;
 import fr.snowy.model.Wallet;
 
@@ -18,7 +16,7 @@ public class BalancePanel extends JPanel {
 
     public BalancePanel(Wallet wallet) {
 	this.wallet = wallet;
-	this.balanceModel = new BalanceModel(wallet.getBalance());
+	this.balanceModel = new BalanceModel(wallet);
 	this.balanceTable = new JTable(balanceModel);
 	
 	setLayout(new BorderLayout());
@@ -32,15 +30,15 @@ public class BalancePanel extends JPanel {
 
 class BalanceModel extends AbstractTableModel
 {
-	private HashMap<Currency, Float> balance;
+	private Wallet wallet;
 	
-	public BalanceModel(HashMap<Currency, Float> balance) {
-		this.balance = balance;
+	public BalanceModel(Wallet wallet) {
+		this.wallet = wallet;
 	}
 
 	@Override
 	public int getRowCount() {
-		return this.balance.size();
+		return this.wallet.getBalance().size();
 	}
 
 	@Override
@@ -50,7 +48,7 @@ class BalanceModel extends AbstractTableModel
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Currency currentCurrency = (Currency) this.balance.keySet().toArray()[rowIndex];
+		Currency currentCurrency = (Currency) this.wallet.getBalance().keySet().toArray()[rowIndex];
 		Object object;
 		switch (columnIndex) {
 		case 0:
@@ -58,7 +56,7 @@ class BalanceModel extends AbstractTableModel
 			break;
 
 		case 1:
-			object = this.balance.get(currentCurrency);
+			object = this.wallet.getBalance().get(currentCurrency);
 			break;
 		default:
 			object = null;
