@@ -34,9 +34,9 @@ public class Controller {
 	}
 
 	public void updateOrders() {
-		HashMap<String, String> input = new HashMap<>();
-		input.put("pair", "XXBTZEUR");
-		this.wallet.setOrders(this.krakenApi.queryOrders(input));
+		HashMap<String, String> parameters = new HashMap<>();
+		parameters.put("start", String.valueOf(wallet.getLastOrderTimestamp()));
+		this.wallet.setOrders(this.krakenApi.queryOrders(parameters));
 
 	}
 
@@ -44,21 +44,21 @@ public class Controller {
 		String krakenFiat = KrakenUtils.convertCurrencyToKraken(Fiat.DEFAULT);
 		String krakenCrypto;
 		ObjectMapper mapper = new ObjectMapper();
-		Map<String, String> input = new HashMap<>();
+		Map<String, String> parameters = new HashMap<>();
 
 		for (Crypto crypto : Crypto.values()) {
 			krakenCrypto = KrakenUtils.convertCurrencyToKraken(crypto);
-			input.put("pair", krakenCrypto + krakenFiat);
+			parameters.put("pair", krakenCrypto + krakenFiat);
 		}
-		this.market.putPrices(this.krakenApi.queryPrices(input));
+		this.market.putPrices(this.krakenApi.queryPrices(parameters));
 		this.market.setLastRefreshedTimestamp(System.currentTimeMillis());
 	}
 
 	public void updateBalance() {
-		Map<String, String> input = new HashMap();
+		Map<String, String> parameters = new HashMap();
 
-		input.put("asset", "ZEUR");
-		this.wallet.setBalance(this.krakenApi.queryBalance(input));
+		parameters.put("asset", "ZEUR");
+		this.wallet.setBalance(this.krakenApi.queryBalance(parameters));
 
 	}
 
