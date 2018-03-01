@@ -88,7 +88,8 @@ public class KrakenAPI {
 			String valueStr;
 			Currency currency;
 			
-			response = this.api.queryPrivate(Method.TRADE_BALANCE, parameters);
+//			response = this.api.queryPrivate(Method.TRADE_BALANCE, parameters);
+			response = "{\"error\":[],\"result\":{\"XXBT\":\"0.02\", \"XZEC\":\"0.5\"}}";
 			krakenParser = mapper.readValue(response, KrakenParser.class);
 			
 			for (String currencyStr : (Set<String>) krakenParser.getResult().keySet()) {
@@ -96,7 +97,7 @@ public class KrakenAPI {
 				currency = KrakenUtils.convertCurrencyFromKraken(currencyStr);
 				balance.put(currency, Float.parseFloat(valueStr));
 			}
-		} catch (InvalidKeyException | NoSuchAlgorithmException | IOException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return balance;

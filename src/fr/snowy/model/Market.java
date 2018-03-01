@@ -13,20 +13,20 @@ public class Market implements Serializable {
 	}
 
 	public void putPrices(ArrayList<Price> newPrices) {
-		for (Price p : newPrices)
-			putPrice(p);
+		//TODO keep old prices ?
+		this.prices = newPrices;
+//		for (Price p : newPrices)
+//			putPrice(p);
+		this.lastRefreshedTimestamp = System.currentTimeMillis();
 	}
+	
+//	public void putPrice(Price newPrice) {
+//		int index;
+//		if ((index = prices.indexOf(newPrice)) != -1)
+//			prices.remove(index);
+//		prices.add(newPrice);
+//	}
 
-	public void setLastRefreshedTimestamp(long lastRefreshedTimestamp) {
-		this.lastRefreshedTimestamp = lastRefreshedTimestamp;
-	}
-
-	public void putPrice(Price newPrice) {
-		int index;
-		if ((index = prices.indexOf(newPrice)) != -1)
-			prices.remove(index);
-		prices.add(newPrice);
-	}
 
 	public ArrayList<Price> getPrices() {
 		return prices;

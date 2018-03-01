@@ -37,7 +37,6 @@ public class Controller {
 		HashMap<String, String> parameters = new HashMap<>();
 		parameters.put("start", String.valueOf(wallet.getLastOrderTimestamp()));
 		this.wallet.setOrders(this.krakenApi.queryOrders(parameters));
-
 	}
 
 	public void updatePrices() {
@@ -51,7 +50,6 @@ public class Controller {
 			parameters.put("pair", krakenCrypto + krakenFiat);
 		}
 		this.market.putPrices(this.krakenApi.queryPrices(parameters));
-		this.market.setLastRefreshedTimestamp(System.currentTimeMillis());
 	}
 
 	public void updateBalance() {

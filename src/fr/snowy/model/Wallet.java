@@ -29,6 +29,7 @@ public class Wallet implements Serializable {
 
 	public void setBalance(HashMap<Currency, Float> balance) {
 		this.balance = balance;
+		this.lastBalanceTimestamp = System.currentTimeMillis();
 	}
 
 
@@ -39,6 +40,7 @@ public class Wallet implements Serializable {
 
 	public void setOrders(ArrayList<Order> orders) {
 		this.orders = orders;
+		this.lastOrderTimestamp = System.currentTimeMillis();
 	}
 	
 
