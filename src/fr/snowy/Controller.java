@@ -1,5 +1,6 @@
 package fr.snowy;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -7,65 +8,52 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import fr.snowy.api.kraken.KrakenAPI;
-import fr.snowy.model.*;
-import fr.snowy.model.kraken.*;
+import java.util.Scanner;
+
+import org.knowm.xchange.Exchange;
+import org.knowm.xchange.ExchangeSpecification;
+import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.kraken.KrakenExchange;
+
+import fr.snowy.model.Wallet;
 import fr.snowy.ui.Frame;
 
 public class Controller {
 
 	private Frame frame;
-	private KrakenAPI krakenApi;
 	private Wallet wallet;
-	private Market market;
-	
+	private Exchange krakenExchange;
+	private ExchangeSpecification krakenSpecification;
 
 	public Controller() throws InvalidKeyException, NoSuchAlgorithmException, IOException {
-
-		this.init();
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			public void run() {
-				save();
-			}
-		});
+		Scanner sc = new Scanner(new File("resources/secret.txt"));
+		if ((this.wallet = (Wallet) deserialize("wallet.bloc")) == null)
+			this.wallet = new Wallet();
+		this.frame = new Frame(this, this.wallet, null);
+		this.krakenExchange = new KrakenExchange();
+		this.krakenSpecification.setApiKey(sc.nextLine());
+		this.krakenSpecification.setSecretKey(sc.nextLine());
+		krakenSpecification = krakenExchange.getExchangeSpecification();
 	}
 
 	public void updateOrders() {
-		HashMap<String, String> parameters = new HashMap<>();
-		parameters.put("start", String.valueOf(wallet.getLastOrderTimestamp()));
-		this.wallet.setOrders(this.krakenApi.queryOrders(parameters));
 	}
 
 	public void updatePrices() {
-		String krakenFiat = KrakenUtils.convertCurrencyToKraken(Fiat.DEFAULT);
-		String krakenCrypto;
-		ObjectMapper mapper = new ObjectMapper();
-		Map<String, String> parameters = new HashMap<>();
-
-		for (Crypto crypto : Crypto.values()) {
-			krakenCrypto = KrakenUtils.convertCurrencyToKraken(crypto);
-			parameters.put("pair", krakenCrypto + krakenFiat);
+		try {
+			krakenExchange.getMarketDataService().getTicker(CurrencyPair.BTC_EUR);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		this.market.putPrices(this.krakenApi.queryPrices(parameters));
 	}
 
 	public void updateBalance() {
-		Map<String, String> parameters = new HashMap();
+		try {
+			this.wallet.setBalance(krakenExchange.getAccountService().getAccountInfo().getWallet().getBalances());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
-		parameters.put("asset", "ZEUR");
-		this.wallet.setBalance(this.krakenApi.queryBalance(parameters));
-
-	}
-
-	public void init() {
-		this.krakenApi = new KrakenAPI();
-		if ((this.market = (Market) deserialize("market.bloc")) == null)
-			this.market = new Market();
-		this.wallet = new Wallet();
-		this.frame = new Frame(this, this.wallet, this.market);
 	}
 
 	public void save() {
@@ -99,11 +87,6 @@ public class Controller {
 		}
 	}
 
-	public Wallet getWallet() {
-		return this.wallet;
-	}
-	
-	
 	public static void main(String args[]) {
 		try {
 			new Controller();
@@ -111,5 +94,5 @@ public class Controller {
 			e.printStackTrace();
 		}
 	}
-	
+
 }

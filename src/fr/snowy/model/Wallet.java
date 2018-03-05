@@ -4,9 +4,13 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+
+import org.knowm.xchange.currency.Currency;
+import org.knowm.xchange.dto.Order;
 
 public class Wallet implements Serializable {
-	private HashMap<Currency, Float> balance;
+	private Map<Currency, Float> balance;
 	private ArrayList<Order> orders;
 	private long lastOrderTimestamp, lastBalanceTimestamp;
 	
@@ -22,12 +26,12 @@ public class Wallet implements Serializable {
 		return "Wallet [wallet dynamic = " + balance + "]";
 	}
 	
-	public HashMap<Currency, Float> getBalance() {
+	public Map<Currency, Float> getBalance() {
 		return balance;
 	}
 
 
-	public void setBalance(HashMap<Currency, Float> balance) {
+	public void setBalance(Map<Currency, Float> balance) {
 		this.balance = balance;
 		this.lastBalanceTimestamp = System.currentTimeMillis();
 	}
