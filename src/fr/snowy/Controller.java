@@ -11,6 +11,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 import org.knowm.xchange.Exchange;
+import org.knowm.xchange.ExchangeFactory;
 import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.kraken.KrakenExchange;
@@ -23,17 +24,18 @@ public class Controller {
 	private Frame frame;
 	private Wallet wallet;
 	private Exchange krakenExchange;
-	private ExchangeSpecification krakenSpecification;
 
 	public Controller() throws InvalidKeyException, NoSuchAlgorithmException, IOException {
 		Scanner sc = new Scanner(new File("resources/secret.txt"));
 		if ((this.wallet = (Wallet) deserialize("wallet.bloc")) == null)
 			this.wallet = new Wallet();
-		this.frame = new Frame(this, this.wallet, null);
-		this.krakenExchange = new KrakenExchange();
-		this.krakenSpecification.setApiKey(sc.nextLine());
-		this.krakenSpecification.setSecretKey(sc.nextLine());
-		krakenSpecification = krakenExchange.getExchangeSpecification();
+		this.frame = new Frame(this, this.wallet);
+		this.krakenExchange = ExchangeFactory.INSTANCE.createExchange(KrakenExchange.class);
+		ExchangeSpecification krakenSpecification = krakenExchange.getExchangeSpecification();
+		krakenSpecification.setApiKey(sc.nextLine());
+		krakenSpecification.setSecretKey(sc.nextLine());
+		System.out.println(krakenSpecification.getApiKey());
+		System.out.println(krakenSpecification.getSecretKey());
 	}
 
 	public void updateOrders() {
@@ -48,8 +50,9 @@ public class Controller {
 	}
 
 	public void updateBalance() {
+		this.wallet.resetBalance();
 		try {
-			this.wallet.setBalance(krakenExchange.getAccountService().getAccountInfo().getWallet().getBalances());
+			this.wallet.addBalance(krakenExchange.getAccountService().getAccountInfo().getWallet().getBalances());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

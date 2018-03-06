@@ -5,7 +5,10 @@ import java.awt.BorderLayout;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-import fr.snowy.model.Order;
+
+import org.knowm.xchange.currency.Currency;
+import org.knowm.xchange.service.trade.params.TradeHistoryParamsAll;
+
 import fr.snowy.model.Wallet;
 
 public class OrdersPanel extends JPanel {
@@ -49,29 +52,20 @@ class OrdersModel extends AbstractTableModel {
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		Order order = this.wallet.getOrders().get(rowIndex);
-		Object object;
+		TradeHistoryParamsAll currency = null;
+		Object cell;
 		switch (columnIndex) {
 		case 0:
-			object = order.getCurrencyTo();
+			cell = currency.getCurrencyPair().base.getDisplayName();
 			break;
 		case 1:
-			object = order.getInstruction();
-			break;
-		case 2:
-			object = order.getQuantity();
-			break;
-		case 3:
-			object = order.getPrice();
-			break;
-		case 4:
-			object = order.getCost();
+			cell = currency.getEndTime();
 			break;
 		default:
-			object = null;
+			cell = null;
 			break;
 		}
-		return object;
+		return cell;
 	}
 
 	public String getColumnName(int col) {

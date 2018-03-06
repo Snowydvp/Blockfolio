@@ -5,7 +5,8 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-import fr.snowy.model.Currency;
+import org.knowm.xchange.currency.Currency;
+
 import fr.snowy.model.Wallet;
 
 public class BalancePanel extends JPanel {

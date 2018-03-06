@@ -21,9 +21,7 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import fr.snowy.Controller;
-import fr.snowy.model.Market;
 import fr.snowy.model.Wallet;
 
 public class Frame extends JFrame implements ActionListener, ChangeListener {
@@ -34,21 +32,18 @@ public class Frame extends JFrame implements ActionListener, ChangeListener {
 	private OrdersPanel ordersPanel;
 	private PricePanel pricePanel;
 	private Controller controller;
-	private Market market;
 	private Wallet wallet;
 
-	public Frame(Controller controller, Wallet wallet, Market market) {
+	public Frame(Controller controller, Wallet wallet) {
 		this.controller = controller;
-		this.market = market;
-		this.wallet = wallet;
 		this.actionPanel = new ActionPanel(this);
 		this.tabbedPane = new JTabbedPane();
 		this.balancePanel = new BalancePanel(wallet);
 		this.ordersPanel = new OrdersPanel(wallet);
-		this.pricePanel = new PricePanel(market);
+		this.pricePanel = new PricePanel();
 
 		add(tabbedPane);
-		tabbedPane.addTab("Wallet", balancePanel);
+		tabbedPane.addTab("Balance", balancePanel);
 		tabbedPane.addTab("Orders", ordersPanel);
 		tabbedPane.addTab("Prices", pricePanel);
 		tabbedPane.addChangeListener(this);
@@ -77,7 +72,7 @@ public class Frame extends JFrame implements ActionListener, ChangeListener {
 		else if (component.equals(this.pricePanel))
 		{
 			controller.updatePrices();
-			actionPanel.updateTime(market.getLastRefreshedTimestamp());
+//			actionPanel.updateTime(market.getLastRefreshedTimestamp());
 		}
 		repaint();
 	}
@@ -98,8 +93,8 @@ public class Frame extends JFrame implements ActionListener, ChangeListener {
 			actionPanel.updateTime(wallet.getLastBalanceTimestamp());
 		else if (component.equals(this.ordersPanel))
 			actionPanel.updateTime(wallet.getLastOrderTimestamp());
-		else if (component.equals(this.pricePanel))
-			actionPanel.updateTime(market.getLastRefreshedTimestamp());
+//		else if (component.equals(this.pricePanel))
+//			actionPanel.updateTime(market.getLastRefreshedTimestamp());
 
 	}
 

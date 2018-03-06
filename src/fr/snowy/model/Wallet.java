@@ -8,9 +8,10 @@ import java.util.Map;
 
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.dto.Order;
+import org.knowm.xchange.dto.account.Balance;
 
 public class Wallet implements Serializable {
-	private Map<Currency, Float> balance;
+	private Map<Currency, Balance> balance;
 	private ArrayList<Order> orders;
 	private long lastOrderTimestamp, lastBalanceTimestamp;
 	
@@ -26,14 +27,19 @@ public class Wallet implements Serializable {
 		return "Wallet [wallet dynamic = " + balance + "]";
 	}
 	
-	public Map<Currency, Float> getBalance() {
+	public Map<Currency, Balance> getBalance() {
 		return balance;
 	}
 
 
-	public void setBalance(Map<Currency, Float> balance) {
-		this.balance = balance;
+	public void addBalance(Map<Currency, Balance> balance) {
+		this.balance.putAll(balance);
 		this.lastBalanceTimestamp = System.currentTimeMillis();
+	}
+	
+	public void resetBalance()
+	{
+		this.balance.clear();
 	}
 
 
